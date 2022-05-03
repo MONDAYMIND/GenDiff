@@ -2,7 +2,7 @@ install:
 	npm ci
 
 publish:
-	npm publish --dry-run && sudo npm link
+	npm publish --dry-run
 
 lint:
 	npx eslint .
