@@ -5,7 +5,7 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
-  "main": "/bin/gendiff.js",
+  "main": "/src/genDiff.js",
   "scripts": {
     "test": "npx jest"
   },
@@ -23,7 +23,6 @@
   "dependencies": {
     "commander": "^9.2.0",
     "fs": "^0.0.1-security",
-    "gendiff": "file:../bin/gendiff.js",
     "jest": "^28.0.3",
     "lodash": "^4.17.21",
     "path": "^0.12.7",
