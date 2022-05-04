@@ -2,6 +2,9 @@ name: linter-check
 
 on: push
 
+env:
+  CI: true
+
 jobs:
   build:
 
@@ -19,3 +22,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: make install
       - run: make lint
+      - name: Test & publish code coverage
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
+      - run: make test
