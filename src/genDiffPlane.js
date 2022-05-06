@@ -23,10 +23,10 @@ const genDiffPlane = (filepath1, filepath2) => {
   const lines = sortedEntries.map(([key, value]) => {
     let operator = ' ';
     const objectComparison = file1obj[key] === file2obj[key];
-    if (!Object.hasOwn(file1obj, key)
+    if (!_.has(file1obj, key)
     || (!objectComparison && value === file2obj[key])) {
       operator = '+';
-    } if (!Object.hasOwn(file2obj, key)
+    } if (!_.has(file2obj, key)
     || (!objectComparison && value === file1obj[key])) {
       operator = '-';
     }
