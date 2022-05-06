@@ -12,8 +12,10 @@ const genDiffPlane = (filepath1, filepath2) => {
   if (!filepath1.endsWith('json') || !filepath2.endsWith('json')) {
     return 'Wrong format of file!';
   }
-  const data1obj = JSON.parse(readFileSync(formAbsolutePath(filepath1), 'utf8'));
-  const data2obj = JSON.parse(readFileSync(formAbsolutePath(filepath2), 'utf8'));
+  const data1 = readFileSync(formAbsolutePath(filepath1), 'utf8');
+  const data1obj = JSON.parse(data1);
+  const data2 = readFileSync(formAbsolutePath(filepath2), 'utf8');
+  const data2obj = JSON.parse(data2);
 
   const entries1 = Object.entries(data1obj);
   const entries2 = Object.entries(data2obj);
