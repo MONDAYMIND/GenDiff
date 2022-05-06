@@ -5,9 +5,9 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
-  "main": "/src/genDiff.js",
+  "main": "/src/genDiffPlane.js",
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest --bail"
   },
   "repository": {
     "type": "git",
@@ -24,14 +24,16 @@
     "commander": "^9.2.0",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
-    "path": "^0.12.7",
     "process": "^0.11.10"
   },
   "devDependencies": {
+    "@jest/globals": "^28.0.3",
     "eslint": "^8.14.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.1.5",
-    "jest": "^28.0.3"
+    "jest": "^28.0.3",
+    "jest-cli": "^28.0.3",
+    "path": "^0.12.7"
   }
 }

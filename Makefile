@@ -11,7 +11,7 @@ test:
 	npm test
 
 test-watch:
-	jest --watch
+	node --experimental-vm-modules node_modules/jest/bin/jest.js --watch
 
 test-coverage:
-	npm test --coverage
+	npm test -- --coverage --coverageProvider=v8
