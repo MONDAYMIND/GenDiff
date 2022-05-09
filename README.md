@@ -4,6 +4,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/2bcaab0ac44b2fb72108/maintainability)](https://codeclimate.com/github/MONDAYMIND/frontend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2bcaab0ac44b2fb72108/test_coverage)](https://codeclimate.com/github/MONDAYMIND/frontend-project-lvl2/test_coverage)
 
-Аскинема с первым пробным запуском библиотеки:
+Аскинема с первым пробным запуском библиотеки (сравнение плоских json-файлов):
 https://asciinema.org/a/491834
 
+Аскинема со вторым запуском библиотеки (сравнение плоских json и yml-файлов):
+https://asciinema.org/a/493013

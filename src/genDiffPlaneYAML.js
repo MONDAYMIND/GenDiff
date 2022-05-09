@@ -2,18 +2,24 @@ import _ from 'lodash';
 import path from 'path';
 import process from 'process';
 import { readFileSync } from 'fs';
+import parse from './parsers.js';
 
 const formAbsolutePath = (filepath) => {
   const cwd = process.cwd();
   return path.resolve(cwd, filepath);
 };
 
-const genDiffPlane = (filepath1, filepath2) => {
-  if (!filepath1.endsWith('json') || !filepath2.endsWith('json')) {
+const genDiffPlaneYAML = (filepath1, filepath2) => {
+  const format1 = path.extname(filepath1);
+  const format2 = path.extname(filepath2);
+
+  if ((format1 !== '.yaml' && format1 !== '.yml' && format1 !== '.json')
+  || (format2 !== '.yaml' && format2 !== '.yml' && format2 !== '.json')) {
     return 'Wrong format of file!';
   }
-  const file1obj = JSON.parse(readFileSync(formAbsolutePath(filepath1), 'utf8'));
-  const file2obj = JSON.parse(readFileSync(formAbsolutePath(filepath2), 'utf8'));
+
+  const file1obj = parse(readFileSync(formAbsolutePath(filepath1)), format1);
+  const file2obj = parse(readFileSync(formAbsolutePath(filepath2)), format2);
 
   const entries1 = Object.entries(file1obj);
   const entries2 = Object.entries(file2obj);
@@ -39,4 +45,4 @@ const genDiffPlane = (filepath1, filepath2) => {
     '}'].join('\n');
 };
 
-export default genDiffPlane;
+export default genDiffPlaneYAML;
