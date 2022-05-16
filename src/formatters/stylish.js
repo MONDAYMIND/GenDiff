@@ -5,7 +5,6 @@ const stylish = (difference) => {
     if (!_.isObject(diff)) {
       return `${diff}`;
     }
-
     let replacer = '    ';
     if (depth === 0) {
       replacer = '';
@@ -21,9 +20,9 @@ const stylish = (difference) => {
     } else {
       result = diff.map((obj) => {
         let operator = ' ';
-        if (obj.status === 'added' || obj.status === 'parent2') {
+        if (obj.status === 'added' || obj.status === 'changedAndParentIsObj2') {
           operator = '+';
-        } if (obj.status === 'deleted' || obj.status === 'parent1') {
+        } if (obj.status === 'deleted' || obj.status === 'changedAndParentIsObj1') {
           operator = '-';
         }
         const indentOfComparableObject = `${replacer.repeat(depth)}  ${operator} `;
