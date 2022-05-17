@@ -3,7 +3,8 @@ import _ from 'lodash';
 const buildPlainString = (obj, property) => {
   const isValueComplex = (_.isObject(obj.value)) ? '[complex value]' : obj.value;
   const preparedValue = (typeof obj.value === 'string') ? `'${obj.value}'` : isValueComplex;
-  const preparedNewValue = (typeof obj.newValue === 'string') ? `'${obj.newValue}'` : obj.newValue;
+  const isNewValueComplex = (_.isObject(obj.newValue)) ? '[complex value]' : obj.newValue;
+  const preparedNewValue = (typeof obj.newValue === 'string') ? `'${obj.newValue}'` : isNewValueComplex;
 
   switch (obj.status) {
     case 'unchanged':
