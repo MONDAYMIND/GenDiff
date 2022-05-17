@@ -10,28 +10,20 @@ const stylish = (difference) => {
     const currentIndent = `${replacer.repeat(depth)}`;
     const bracketIndent = `${replacer.repeat(depth - 1)}`;
 
-    const resultIfIsNotArray = [];
-    const resultIfIsArray = [];
     if (!Array.isArray(diff)) {
-      Object
+      const resultIfNotArray = Object
         .keys(diff)
-        .map((key) => resultIfIsNotArray.push(`${currentIndent}${key}: ${iter(diff[key], depth + 1)}`));
-    } else {
-      diff.map((obj) => {
-        if (obj.status !== 'has children') {
-          const operator = selectOperator(obj);
-          return resultIfIsArray.push(`${bracketIndent}  ${operator} ${obj.key}: ${iter(obj.value, depth + 1)}`);
-        }
-        return resultIfIsArray.push(`${currentIndent}${obj.key}: ${iter(obj.children, depth + 1)}`);
-      });
+        .flatMap((key) => [`${currentIndent}${key}: ${iter(diff[key], depth + 1)}`]);
+      return ['{', ...resultIfNotArray, `${bracketIndent}}`].join('\n');
     }
-
-    return [
-      '{',
-      ...resultIfIsNotArray,
-      ...resultIfIsArray,
-      `${bracketIndent}}`,
-    ].join('\n');
+    const resultIfArray = diff.flatMap((obj) => {
+      if (obj.status !== 'has children') {
+        const operator = selectOperator(obj);
+        return [`${bracketIndent}  ${operator} ${obj.key}: ${iter(obj.value, depth + 1)}`];
+      }
+      return [`${currentIndent}${obj.key}: ${iter(obj.children, depth + 1)}`];
+    });
+    return ['{', ...resultIfArray, `${bracketIndent}}`].join('\n');
   };
 
   return iter(difference, 1);

@@ -8,25 +8,14 @@ const getFixturePath = (filename) => path.join(dirname(__filename), '..', '__fix
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
 const cases = [
-  ['file1.json', 'file2.yml', 'stylish'],
-  ['file1.json', 'file2.yaml', 'stylish'],
-  ['file1.json', 'file2.yaml', 'plain'],
-  ['file1.json', 'file2.yaml', 'json'],
+  ['file1.json', 'file2.yml', 'stylish', 'resultStylish.txt'],
+  ['file1.json', 'file2.yaml', 'stylish', 'resultStylish.txt'],
+  ['file1.json', 'file2.yaml', 'plain', 'resultPlain.txt'],
+  ['file1.json', 'file2.yaml', 'json', 'resultJSON.json'],
 ];
 
-const expectedData = { stylish: [], plain: [], json: [] };
-
-beforeAll(() => {
-  const resultStylish = readFile('result.txt');
-  const resultPlain = readFile('resultPlain.txt');
-  const resultJSON = readFile('resultJSON.json');
-  expectedData.stylish = resultStylish;
-  expectedData.plain = resultPlain;
-  expectedData.json = resultJSON;
-});
-
-test.each(cases)('compare "%s" and "%s" with %s formatter', (file1, file2, formatName) => {
-  const expected = expectedData[formatName];
+test.each(cases)('compare "%s" and "%s" with %s formatter', (file1, file2, formatName, fixture) => {
+  const expected = readFile(fixture);
   const actual = genDiff(getFixturePath(file1), getFixturePath(file2), formatName);
   expect(actual).toEqual(expected);
 });
