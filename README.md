@@ -15,3 +15,6 @@ https://asciinema.org/a/494347
 
 Аскинема с выводом различий в формате PLAIN (сравнение вложенных json и yml-файлов):
 https://asciinema.org/a/494513
+
+Аскинема с выводом различий в форматах STYLISH, PLAIN и JSON (сравнение вложенных json и yml-файлов):
+https://asciinema.org/a/495122
