@@ -7,43 +7,34 @@ const __filename = fileURLToPath(import.meta.url);
 const getFixturePath = (filename) => path.join(dirname(__filename), '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-let resultStylish;
-let resultPlain;
+const cases = [
+  ['file1.json', 'file2.yml', 'stylish'],
+  ['file1.json', 'file2.yaml', 'stylish'],
+  ['file1.json', 'file2.yaml', 'plain'],
+  ['file1.json', 'file2.yaml', 'json'],
+];
+
+const expectedData = { stylish: [], plain: [], json: [] };
 
 beforeAll(() => {
-  resultStylish = readFile('result.txt');
-  resultPlain = readFile('resultPlain.txt');
+  const resultStylish = readFile('result.txt');
+  const resultPlain = readFile('resultPlain.txt');
+  const resultJSON = readFile('resultJSON.json');
+  expectedData.stylish = resultStylish;
+  expectedData.plain = resultPlain;
+  expectedData.json = resultJSON;
 });
 
-test("genDiff's main flow json stylish", () => {
-  const comparedJSON = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'));
-  expect(comparedJSON).toEqual(resultStylish);
+test.each(cases)('compare "%s" and "%s" with %s formatter', (file1, file2, formatName) => {
+  const expected = expectedData[formatName];
+  const actual = genDiff(getFixturePath(file1), getFixturePath(file2), formatName);
+  expect(actual).toEqual(expected);
 });
 
-test("genDiff's main flow yaml stylish", () => {
-  const comparedYML = genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'));
-  expect(comparedYML).toEqual(resultStylish);
-
-  const comparedYMLwithYAML = genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yaml'));
-  expect(comparedYMLwithYAML).toEqual(resultStylish);
-});
-
-test("genDiff's main flow json with yaml stylish", () => {
-  const comparedJSONwithYAML = genDiff(getFixturePath('file1.json'), getFixturePath('file2.yaml'));
-  expect(comparedJSONwithYAML).toEqual(resultStylish);
-});
-
-test("genDiff's main flow json with yaml plain", () => {
-  const comparedJSON = genDiff(getFixturePath('file1.json'), getFixturePath('file2.yaml'), 'plain');
-  expect(comparedJSON).toEqual(resultPlain);
-});
-
-test('wrong format in genDiff json', () => {
-  const comparedTXTWithJSON = genDiff(getFixturePath('resultStylish.txt'), getFixturePath('file2.json'));
-  expect(comparedTXTWithJSON).toBe('Wrong format of file!');
-});
-
-test('wrong format in genDiff yaml', () => {
-  const comparedTXTWithYAML = genDiff(getFixturePath('resultStylish.txt'), getFixturePath('file2.yml'));
-  expect(comparedTXTWithYAML).toBe('Wrong format of file!');
+test.each([
+  ['resultStylish.txt', 'file2.json'],
+  ['file1.yaml', 'result.txt'],
+])('wrong file format in genDiff', (file1, file2) => {
+  const compareWrongFormat = genDiff(getFixturePath(file1), getFixturePath(file2));
+  expect(compareWrongFormat).toBe('Wrong format of file!');
 });

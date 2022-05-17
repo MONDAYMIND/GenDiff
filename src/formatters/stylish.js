@@ -1,43 +1,40 @@
 import _ from 'lodash';
+import selectOperator from '../selectOperator.js';
 
 const stylish = (difference) => {
   const iter = (diff, depth) => {
     if (!_.isObject(diff)) {
       return `${diff}`;
     }
-    let replacer = '    ';
-    if (depth === 0) {
-      replacer = '';
-    }
-    const indentOfNoncomparableObject = `${replacer.repeat(depth + 1)}`;
-    const bracketIndent = `${replacer.repeat(depth)}`;
+    const replacer = '    ';
+    const currentIndent = `${replacer.repeat(depth)}`;
+    const bracketIndent = `${replacer.repeat(depth - 1)}`;
 
-    let result;
+    const resultIfIsNotArray = [];
+    const resultIfIsArray = [];
     if (!Array.isArray(diff)) {
-      result = Object
+      Object
         .keys(diff)
-        .map((key) => `${indentOfNoncomparableObject}${key}: ${iter(diff[key], depth + 1)}`);
+        .map((key) => resultIfIsNotArray.push(`${currentIndent}${key}: ${iter(diff[key], depth + 1)}`));
     } else {
-      result = diff.map((obj) => {
-        let operator = ' ';
-        if (obj.status === 'added' || obj.status === 'changedAndParentIsObj2') {
-          operator = '+';
-        } if (obj.status === 'deleted' || obj.status === 'changedAndParentIsObj1') {
-          operator = '-';
+      diff.map((obj) => {
+        if (obj.status !== 'has children') {
+          const operator = selectOperator(obj);
+          return resultIfIsArray.push(`${bracketIndent}  ${operator} ${obj.key}: ${iter(obj.value, depth + 1)}`);
         }
-        const indentOfComparableObject = `${replacer.repeat(depth)}  ${operator} `;
-        return `${indentOfComparableObject}${obj.key}: ${iter(obj.value, depth + 1)}`;
+        return resultIfIsArray.push(`${currentIndent}${obj.key}: ${iter(obj.children, depth + 1)}`);
       });
     }
 
     return [
       '{',
-      ...result,
+      ...resultIfIsNotArray,
+      ...resultIfIsArray,
       `${bracketIndent}}`,
     ].join('\n');
   };
 
-  return iter(difference, 0);
+  return iter(difference, 1);
 };
 
 export default stylish;
