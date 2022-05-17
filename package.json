@@ -5,7 +5,7 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
-  "main": "/src/genDiff.js",
+  "main": "src/genDiff.js",
   "scripts": {
     "test": "npx jest --bail"
   },
